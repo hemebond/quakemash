@@ -181,12 +181,12 @@
 "classname" "func_group"
 "_tb_type" "_tb_group"
 "_tb_name" "Shooter"
-"_tb_id" "3739"
+"_tb_id" "1492"
 }
 // entity 2
 {
 "classname" "func_detail_wall"
-"_tb_group" "3739"
+"_tb_group" "1492"
 // brush 0
 {
 ( 212 -4 48 ) ( 200 -4 32 ) ( 200 124 32 ) cop1_1 16 52 90 1 -1
@@ -238,12 +238,12 @@
 "classname" "func_group"
 "_tb_type" "_tb_group"
 "_tb_name" "Ring Portal"
-"_tb_id" "3740"
+"_tb_id" "1493"
 }
 // entity 4
 {
 "classname" "func_detail_wall"
-"_tb_group" "3740"
+"_tb_group" "1493"
 // brush 0
 {
 ( 452 -0 88 ) ( 452 1.125 88 ) ( 452 -0 89.125 ) cop2_3 0 -0 0 1 1
