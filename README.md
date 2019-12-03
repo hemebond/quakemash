@@ -8,7 +8,7 @@ Extract `quakemash.bsp` into the `/id1/maps/` directory (create if necessary) in
 
 ### E1M8 ###
 
-E1M8 is a secret level with low gravity. For this to work requires a mod that properly supports `trigger_setgravity` such as [dumptruckDS' progs_dump](https://github.com/dumptruckDS/progs_dump_qc) mod.
+E1M8 is a secret level with low gravity. For this to work requires a mod that properly supports `trigger_setgravity` such as [dumptruckDS' progs_dump](http://www.quaketastic.com/files/single_player/mods/progs_dump_devkit_v112.zip) mod.
 
 ## Usage ##
 
