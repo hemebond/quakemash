@@ -6,6 +6,10 @@ A singular map made of of all the original Quake levels, allowing for a single c
 
 Extract `quakemash.bsp` into the `/id1/maps/` directory (create if necessary) in your Quake directory.
 
+### E1M8 ###
+
+E1M8 is a secret level with low gravity. For this to work requires a mod that properly supports `trigger_setgravity` such as [dumptruckDS' progs_dump](https://github.com/dumptruckDS/progs_dump_qc) mod.
+
 ## Usage ##
 
 Set your skill before loading the map, e.g.:
