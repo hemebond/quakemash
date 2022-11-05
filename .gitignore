@@ -1,0 +1,10 @@
+# Trenchbroom stuff
+autosave/*
+
+# Compiled files
+*.lit
+*.lux
+*.prt
+*.pts
+*.texinfo
+*.bsp
