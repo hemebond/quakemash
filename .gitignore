@@ -1,5 +1,8 @@
 # Trenchbroom stuff
-autosave/*
+**/autosave/*
+
+# Quake mod directory stuff
+/screenshots/
 
 # Compiled files
 *.lit
@@ -8,3 +11,5 @@ autosave/*
 *.pts
 *.texinfo
 *.bsp
+*.dat
+*.vis
