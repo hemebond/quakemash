@@ -491,6 +491,36 @@ void(entity attacker, float take) zombie_pain =
 		zombie_paind1();
 };
 
+
+
+void() monster_zombie_show = {
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+	setmodel(self, "progs/zombie.mdl");
+	setsize(self, '-16 -16 -24', '16 16 40');
+};
+
+
+
+void() monster_zombie_spawn = {
+	//
+	// Make the zombie visible and active by completing the
+	// setup process and then calling the use function
+	//
+	monster_zombie_show();
+
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	total_monsters = total_monsters + 1;
+	walkmonster_start_go();
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		monster_use();
+	}
+};
+
 //============================================================================
 
 /*QUAKED monster_zombie (1 0 0) (-16 -16 -24) (16 16 32) Crucified ambush
@@ -520,12 +550,6 @@ void() monster_zombie =
 	precache_sound("zombie/z_hit.wav");
 	precache_sound("zombie/idle_w2.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	setmodel(self, "progs/zombie.mdl");
-
-	setsize(self, '-16 -16 -24', '16 16 40');
 	self.health = 60;
 
 	self.th_stand = zombie_stand1;
@@ -537,9 +561,16 @@ void() monster_zombie =
 
 	if (self.spawnflags & SPAWN_CRUCIFIED)
 	{
+		monster_zombie_show();
 		self.movetype = MOVETYPE_NONE;
 		zombie_cruc1();
 	}
-	else
+	else if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_zombie_spawn;
+		monster_hide();
+	}
+	else {
+		monster_zombie_show();
 		walkmonster_start();
+	}
 };

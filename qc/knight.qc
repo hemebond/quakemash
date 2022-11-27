@@ -252,6 +252,36 @@ void() knight_die =
 };
 
 
+
+void() monster_knight_show = {
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+	setmodel(self, "progs/knight.mdl");
+	setsize(self, '-16 -16 -24', '16 16 40');
+};
+
+
+
+void() monster_knight_spawn = {
+	//
+	// Make the shambler visible and active by completing the
+	// setup process and then calling the use function
+	//
+	monster_knight_show();
+
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	total_monsters = total_monsters + 1;
+	walkmonster_start_go();
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		monster_use();
+	}
+};
+
+
 /*QUAKED monster_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 */
 void() monster_knight =
@@ -271,12 +301,6 @@ void() monster_knight =
 	precache_sound("knight/sword2.wav");
 	precache_sound("knight/idle.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	setmodel(self, "progs/knight.mdl");
-
-	setsize(self, '-16 -16 -24', '16 16 40');
 	self.health = 75;
 
 	self.th_stand = knight_stand1;
@@ -286,5 +310,12 @@ void() monster_knight =
 	self.th_pain = knight_pain;
 	self.th_die = knight_die;
 
-	walkmonster_start();
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_knight_spawn;
+		monster_hide();
+	}
+	else {
+		monster_knight_show();
+		walkmonster_start();
+	}
 };

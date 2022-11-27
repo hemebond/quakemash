@@ -478,6 +478,36 @@ void() ogre_melee =
 };
 
 
+
+void() monster_ogre_show = {
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+	setmodel(self, "progs/ogre.mdl");
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+};
+
+
+
+void() monster_ogre_spawn = {
+	//
+	// Make the ogre visible and active by completing the
+	// setup process and then calling the use function
+	//
+	monster_ogre_show();
+
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	total_monsters = total_monsters + 1;
+	walkmonster_start_go();
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		monster_use();
+	}
+};
+
+
 /*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 
 */
@@ -500,12 +530,6 @@ void() monster_ogre =
 	precache_sound("ogre/ogsawatk.wav");
 	precache_sound("ogre/ogwake.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	setmodel(self, "progs/ogre.mdl");
-
-	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.health = 200;
 
 	self.th_stand = ogre_stand1;
@@ -516,7 +540,14 @@ void() monster_ogre =
 	self.th_missile = ogre_nail1;
 	self.th_pain = ogre_pain;
 
-	walkmonster_start();
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_ogre_spawn;
+		monster_hide();
+	}
+	else {
+		monster_ogre_show();
+		walkmonster_start();
+	}
 };
 
 void() monster_ogre_marksman =

@@ -199,6 +199,7 @@ void() monster_demon1_show = {
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
 	setmodel(self, "progs/demon.mdl");
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 };
 
 void() monster_demon1_spawn = {
@@ -212,6 +213,7 @@ void() monster_demon1_spawn = {
 		spawn_tfog(self.origin);
 	}
 
+	total_monsters = total_monsters + 1;
 	walkmonster_start_go();
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
@@ -240,7 +242,6 @@ void() monster_demon1 =
 	precache_sound("demon/idle1.wav");
 	precache_sound("demon/sight2.wav");
 
-	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.health = 300;
 
 	self.th_stand = demon1_stand1;

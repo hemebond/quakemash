@@ -275,6 +275,36 @@ void() army_die =
 };
 
 
+
+void() monster_army_show = {
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+	setmodel(self, "progs/soldier.mdl");
+	setsize(self, '-16 -16 -24', '16 16 40');
+};
+
+
+
+void() monster_army_spawn = {
+	//
+	// Make the soldier visible and active by completing the
+	// setup process and then calling the use function
+	//
+	monster_army_show();
+
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	total_monsters = total_monsters + 1;
+	walkmonster_start_go();
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		monster_use();
+	}
+};
+
+
 /*QUAKED monster_army (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 */
 void() monster_army =
@@ -299,13 +329,6 @@ void() monster_army =
 
 	precache_sound("player/udeath.wav"); // gib death
 
-
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	setmodel(self, "progs/soldier.mdl");
-
-	setsize(self, '-16 -16 -24', '16 16 40');
 	self.health = 30;
 
 	self.th_stand = army_stand1;
@@ -315,5 +338,12 @@ void() monster_army =
 	self.th_pain = army_pain;
 	self.th_die = army_die;
 
-	walkmonster_start();
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_army_spawn;
+		monster_hide();
+	}
+	else {
+		monster_army_show();
+		walkmonster_start();
+	}
 };

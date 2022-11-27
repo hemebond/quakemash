@@ -423,6 +423,36 @@ void() hknight_melee =
 	}
 };
 
+
+
+void() monster_hell_knight_show = {
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+	setmodel(self, "progs/hknight.mdl");
+	setsize(self, '-16 -16 -24', '16 16 40');
+};
+
+
+
+void() monster_hell_knight_spawn = {
+	//
+	// Make the hell knight visible and active by completing the
+	// setup process and then calling the use function
+	//
+	monster_hell_knight_show();
+
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	total_monsters = total_monsters + 1;
+	walkmonster_start_go();
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		monster_use();
+	}
+};
+
 /*QUAKED monster_hell_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 */
 void() monster_hell_knight =
@@ -449,12 +479,6 @@ void() monster_hell_knight =
 	precache_sound("knight/sword1.wav");
 	precache_sound("knight/sword2.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	setmodel(self, "progs/hknight.mdl");
-
-	setsize(self, '-16 -16 -24', '16 16 40');
 	self.health = 250;
 
 	self.th_stand = hknight_stand1;
@@ -465,5 +489,12 @@ void() monster_hell_knight =
 	self.th_pain = hknight_pain;
 	self.th_die = hknight_die;
 
-	walkmonster_start();
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_hell_knight_spawn;
+		monster_hide();
+	}
+	else {
+		monster_hell_knight_show();
+		walkmonster_start();
+	}
 };

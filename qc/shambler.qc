@@ -365,6 +365,7 @@ void() monster_shambler_show = {
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
 	setmodel(self, "progs/shambler.mdl");
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 };
 
 
@@ -380,6 +381,7 @@ void() monster_shambler_spawn = {
 		spawn_tfog(self.origin);
 	}
 
+	total_monsters = total_monsters + 1;
 	walkmonster_start_go();
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
@@ -413,7 +415,6 @@ void() monster_shambler =
 	precache_sound("shambler/melee2.wav");
 	precache_sound("shambler/smack.wav");
 
-	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.health = 600;
 
 	self.th_stand = sham_stand1;

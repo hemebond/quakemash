@@ -400,6 +400,7 @@ void() monster_wizard_show = {
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
 	setmodel(self, "progs/wizard.mdl");
+	setsize(self, '-16 -16 -24', '16 16 40');
 };
 
 void() monster_wizard_spawn = {
@@ -413,6 +414,7 @@ void() monster_wizard_spawn = {
 		spawn_tfog(self.origin);
 	}
 
+	total_monsters = total_monsters + 1;
 	flymonster_start_go();
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
@@ -441,7 +443,6 @@ void() monster_wizard =
 	precache_sound("wizard/wpain.wav");
 	precache_sound("wizard/wsight.wav");
 
-	setsize(self, '-16 -16 -24', '16 16 40');
 	self.health = 80;
 
 	self.th_stand = wiz_stand1;

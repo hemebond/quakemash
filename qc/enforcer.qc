@@ -335,6 +335,36 @@ void() enf_die =
 };
 
 
+
+void() monster_enforcer_show = {
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+	setmodel(self, "progs/enforcer.mdl");
+	setsize(self, '-16 -16 -24', '16 16 40');
+};
+
+
+
+void() monster_enforcer_spawn = {
+	//
+	// Make the enforcer visible and active by completing the
+	// setup process and then calling the use function
+	//
+	monster_enforcer_show();
+
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	total_monsters = total_monsters + 1;
+	walkmonster_start_go();
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		monster_use();
+	}
+};
+
+
 /*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 
 */
@@ -360,12 +390,7 @@ void() monster_enforcer =
 	precache_sound2 ("enforcer/sight3.wav");
 	precache_sound2 ("enforcer/sight4.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	setmodel(self, "progs/enforcer.mdl");
-
-	setsize(self, '-16 -16 -24', '16 16 40');
+	// setsize(self, '-16 -16 -24', '16 16 40');
 	self.health = 80;
 
 	self.th_stand = enf_stand1;
@@ -375,5 +400,12 @@ void() monster_enforcer =
 	self.th_die = enf_die;
 	self.th_missile = enf_atk1;
 
-	walkmonster_start();
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_enforcer_spawn;
+		monster_hide();
+	}
+	else {
+		monster_enforcer_show();
+		walkmonster_start();
+	}
 };

@@ -220,6 +220,36 @@ void() ShalMissileTouch =
 	s_explode1();
 };
 
+
+
+void() monster_shalrath_show = {
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+	setmodel(self, "progs/shalrath.mdl");
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+};
+
+
+
+void() monster_shalrath_spawn = {
+	//
+	// Make the demon visible and active by completing the
+	// setup process and then calling the use function
+	//
+	monster_shalrath_show();
+
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	total_monsters = total_monsters + 1;
+	walkmonster_start_go();
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		monster_use();
+	}
+};
+
 //=================================================================
 
 /*QUAKED monster_shalrath (1 0 0) (-32 -32 -24) (32 32 48) Ambush
@@ -242,11 +272,6 @@ void() monster_shalrath =
 	precache_sound2 ("shalrath/pain.wav");
 	precache_sound2 ("shalrath/sight.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	setmodel(self, "progs/shalrath.mdl");
-	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.health = 400;
 
 	self.th_stand = shal_stand;
@@ -256,7 +281,14 @@ void() monster_shalrath =
 	self.th_pain = shalrath_pain;
 	self.th_missile = shal_attack1;
 
-	self.think = walkmonster_start;
-	self.nextthink = time + 0.1 + random()*0.1;
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_shalrath_spawn;
+		monster_hide();
+	}
+	else {
+		monster_shalrath_show();
 
+		self.think = walkmonster_start;
+		self.nextthink = time + 0.1 + random()*0.1;
+	}
 };

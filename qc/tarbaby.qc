@@ -203,6 +203,36 @@ void() tbaby_die2 = [ $exp, tbaby_run1 ]
 //=============================================================================
 
 
+
+void() monster_tarbaby_show = {
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+	setmodel(self, "progs/tarbaby.mdl");
+	setsize(self, '-16 -16 -24', '16 16 40');
+};
+
+
+
+void() monster_tarbaby_spawn = {
+	//
+	// Make the tarbaby visible and active by completing the
+	// setup process and then calling the use function
+	//
+	monster_tarbaby_show();
+
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	total_monsters = total_monsters + 1;
+	walkmonster_start_go();
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		monster_use();
+	}
+};
+
+
 /*QUAKED monster_tarbaby (1 0 0) (-16 -16 -24) (16 16 24) Ambush
 */
 void() monster_tarbaby =
@@ -219,12 +249,6 @@ void() monster_tarbaby =
 	precache_sound2 ("blob/land1.wav");
 	precache_sound2 ("blob/sight1.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	setmodel(self, "progs/tarbaby.mdl");
-
-	setsize(self, '-16 -16 -24', '16 16 40');
 	self.health = 80;
 
 	self.th_stand = tbaby_stand1;
@@ -234,6 +258,14 @@ void() monster_tarbaby =
 	self.th_melee = tbaby_jump1;
 	self.th_die = tbaby_die1;
 
-	walkmonster_start();
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_tarbaby_spawn;
+		monster_hide();
+	}
+	else {
+		monster_tarbaby_show();
+		walkmonster_start();
+	}
 };
 
