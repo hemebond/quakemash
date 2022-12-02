@@ -380,10 +380,13 @@ void() teleport_touch =
 	entity t;
 	vector org;
 
-	if (self.targetname)
-	{
-		if (self.nextthink < time)
-		{
+	// Trigger has to be activated to
+	if (self.spawnflags & ENT_STARTOFF) {
+		return;
+	}
+
+	if (self.targetname && !self.spawnflags & TRIG_TELEALWAYSON) {
+		if (self.nextthink < time) {
 			return; // not fired yet
 		}
 	}
@@ -449,8 +452,7 @@ void() info_teleport_destination =
 		objerror("no targetname");
 };
 
-void() teleport_use =
-{
+void() teleport_use = {
 	self.nextthink = time + 0.2;
 	force_retouch = 2; // make sure even still objects get hit
 	self.think = SUB_Null;
@@ -677,7 +679,6 @@ RESET    : Reset any entity to default gravity (does not affect server)
 Change entity/entities/player gravity
 
 ======================================================================*/
-
 void() trigger_gravity_touch = {
 	local entity ent_list;
 
@@ -717,4 +718,39 @@ void() trigger_gravity = {
 	}
 
 	self.touch = trigger_gravity_touch;
+};
+
+
+
+//
+// Below is all the Arcane Dimensions entity state trigger stuff
+// that we use to enable the level skip teleporters
+//
+void() trigger_teleport_alwayson = {
+	local entity t, stemp, otemp;
+
+	// Start looking for targets to update
+	t = find(world, targetname, self.target);
+	stemp = self; otemp = other;	// Store self/other
+	while(t) {
+		// Entity states cannot be applied to players or monsters
+		if ( !(t.flags & FL_CLIENT) && !(t.flags & FL_MONSTER)) {
+			// Only change the state to ON/OFF/DISABLE
+			if (t.use != SUB_Null) {
+				if (t.use) {
+					t.spawnflags = t.spawnflags | TRIG_TELEALWAYSON;  // we only use this for teleporters so...
+				}
+			}
+		}
+		// Are there anymore targets left in the list?
+		t = find(t, targetname, self.target);
+	}
+};
+
+void() trigger_entitystate_on = {
+	//
+	// This is only used for the level skip teleporters so leave
+	// out everything unrealted
+	//
+	self.use = trigger_teleport_alwayson;
 };

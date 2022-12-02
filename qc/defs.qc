@@ -568,7 +568,9 @@ float AS_MISSILE = 4;
 
 //
 // QuakeMash custom fields
+// Mostly from Arcane Dimensions to make it compatible
 //
+float LARGE_TIMER = 999999;		// Don't run out of time!
 
 // trigger_gravity, compatible with Arcane Dimensions
 float DEFAULT_GRAVITY = 800;
@@ -579,6 +581,11 @@ float TRIG_GRAVITYRESET = 16;	// Reset entities to default gravity
 float MON_SPAWN_NOGFX = 32;			// no spawn effect or sound
 float MON_SPAWN_DELAY = 64;			// Trigger spawn DELAY
 float MON_SPAWN_ANGRY = 128;		// Trigger spawn ANGRY
+
+// Level skip teleporters
+.float		estate;				// Entity state (off,on and disable)
+float TRIG_TELEALWAYSON = 4;	// Trigger teleports starts on
+float ENT_STARTOFF = 64;	// Global spawnflags setting
 
 
 //===========================================================================
