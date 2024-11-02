@@ -28,7 +28,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Download and extract ericw tools
         run: |
-          apt install wget unzip
+          sudo apt install --assume-yes wget unzip
           wget https://github.com/ericwa/ericw-tools/releases/download/v0.18.1/ericw-tools-v0.18.1-Linux.zip
           unzip ericw-tools-v0.18.1-Linux.zip
 
