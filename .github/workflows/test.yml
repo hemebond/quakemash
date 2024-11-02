@@ -29,9 +29,9 @@ jobs:
       - name: Download and extract ericw tools
         run: |
           wget https://github.com/ericwa/ericw-tools/releases/download/2.0.0-alpha8/ericw-tools-2.0.0-alpha8-Linux.zip
-          unzip ericw-tools-2.0.0-alpha8-Linux.zip
+          unzip -d bin ericw-tools-2.0.0-alpha8-Linux.zip
 
       - name: Compile map
         run: |
           tree
-          ./ericw-tools-2.0.0-alpha8-Linux/bin/qbsp -nocolor -leaktest -bsp2 -splitspecial maps/src/quakemash.map quakemash.bsp
+          ./bin/qbsp -nocolor -leaktest -bsp2 -splitspecial maps/src/quakemash.map quakemash.bsp
