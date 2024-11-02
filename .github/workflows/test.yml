@@ -33,5 +33,4 @@ jobs:
 
       - name: Compile map
         run: |
-          tree
-          ./bin/qbsp -noprogress -nocolor -leaktest -bsp2 -splitspecial maps/src/quakemash.map quakemash.bsp
+          ./bin/qbsp -noverbose -nocolor -leaktest -bsp2 -splitspecial maps/src/quakemash.map quakemash.bsp
