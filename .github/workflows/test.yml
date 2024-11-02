@@ -25,12 +25,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Download and extract ericw tools
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          apt install wget unzip
+          wget https://github.com/ericwa/ericw-tools/releases/download/v0.18.1/ericw-tools-v0.18.1-Linux.zip
+          unzip ericw-tools-v0.18.1-Linux.zip
+
+      - name: Compile map
+        run: |
+          ls
+          ./ericw-tools-v0.18.1-Linux/bin/qbsp
