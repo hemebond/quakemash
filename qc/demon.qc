@@ -193,34 +193,10 @@ void() Demon_MeleeAttack =
 	demon1_atta1();
 };
 
-
-/*QUAKED monster_demon1 (1 0 0) (-32 -32 -24) (32 32 64) Ambush
-
-*/
-void monster_demon1_spawn();
-void() monster_demon1 =
-{
-	if (deathmatch)
-	{
-		remove(self);
-		return;
+void monster_demon1_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
 	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_demon1_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
-		return;
-	}
-
-	precache_model("progs/demon.mdl");
-	precache_model("progs/h_demon.mdl");
-
-	precache_sound("demon/ddeath.wav");
-	precache_sound("demon/dhit2.wav");
-	precache_sound("demon/djump.wav");
-	precache_sound("demon/dpain1.wav");
-	precache_sound("demon/idle1.wav");
-	precache_sound("demon/sight2.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
@@ -239,19 +215,42 @@ void() monster_demon1 =
 	self.th_pain = demon1_pain;
 
 	walkmonster_start();
-};
-
-void monster_demon1_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_demon1();
 	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();
 	}
 }
+
+/*QUAKED monster_demon1 (1 0 0) (-32 -32 -24) (32 32 64) Ambush
+
+*/
+void() monster_demon1 =
+{
+	if (deathmatch)
+	{
+		remove(self);
+		return;
+	}
+
+	precache_model("progs/demon.mdl");
+	precache_model("progs/h_demon.mdl");
+
+	precache_sound("demon/ddeath.wav");
+	precache_sound("demon/dhit2.wav");
+	precache_sound("demon/djump.wav");
+	precache_sound("demon/dpain1.wav");
+	precache_sound("demon/idle1.wav");
+	precache_sound("demon/sight2.wav");
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_demon1_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
+
+	monster_demon1_spawn();
+};
 
 
 /*

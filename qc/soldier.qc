@@ -274,21 +274,42 @@ void() army_die =
 		army_cdie1();
 };
 
+void monster_army_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+
+	setmodel(self, "progs/soldier.mdl");
+
+	setsize(self, '-16 -16 -24', '16 16 40');
+	self.health = 30;
+
+	self.th_stand = army_stand1;
+	self.th_walk = army_walk1;
+	self.th_run = army_run1;
+	self.th_missile = army_atk1;
+	self.th_pain = army_pain;
+	self.th_die = army_die;
+
+	walkmonster_start();
+	walkmonster_start_go(); // immediately run the setup code
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		self.use();
+	}
+}
+
 
 /*QUAKED monster_army (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 */
-void monster_army_spawn();
 void() monster_army =
 {
 	if (deathmatch)
 	{
 		remove(self);
-		return;
-	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_army_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 
@@ -307,33 +328,10 @@ void() monster_army =
 
 	precache_sound("player/udeath.wav"); // gib death
 
-
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-
-	setmodel(self, "progs/soldier.mdl");
-
-	setsize(self, '-16 -16 -24', '16 16 40');
-	self.health = 30;
-
-	self.th_stand = army_stand1;
-	self.th_walk = army_walk1;
-	self.th_run = army_run1;
-	self.th_missile = army_atk1;
-	self.th_pain = army_pain;
-	self.th_die = army_die;
-
-	walkmonster_start();
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_army_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
+	monster_army_spawn();
 };
-
-void monster_army_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_army();
-	walkmonster_start_go(); // immediately run the setup code
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
-}

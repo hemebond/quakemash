@@ -357,23 +357,44 @@ void() sham_die =
 	sham_death1();
 };
 
+void monster_shambler_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+	setmodel(self, "progs/shambler.mdl");
+
+	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+	self.health = 600;
+
+	self.th_stand = sham_stand1;
+	self.th_walk = sham_walk1;
+	self.th_run = sham_run1;
+	self.th_die = sham_die;
+	self.th_melee = sham_melee;
+	self.th_missile = sham_magic1;
+	self.th_pain = sham_pain;
+
+	walkmonster_start();
+	walkmonster_start_go(); // immediately run the setup code
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		self.use();
+	}
+}
+
 //============================================================================
 
 
 /*QUAKED monster_shambler (1 0 0) (-32 -32 -24) (32 32 64) Ambush
 */
-void monster_shambler_spawn();
 void() monster_shambler =
 {
 	if (deathmatch)
 	{
 		remove(self);
-		return;
-	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_shambler_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 
@@ -392,32 +413,11 @@ void() monster_shambler =
 	precache_sound("shambler/melee2.wav");
 	precache_sound("shambler/smack.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
-	setmodel(self, "progs/shambler.mdl");
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_shambler_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
 
-	setsize(self, VEC_HULL2_MIN, VEC_HULL2_MAX);
-	self.health = 600;
-
-	self.th_stand = sham_stand1;
-	self.th_walk = sham_walk1;
-	self.th_run = sham_run1;
-	self.th_die = sham_die;
-	self.th_melee = sham_melee;
-	self.th_missile = sham_magic1;
-	self.th_pain = sham_pain;
-
-	walkmonster_start();
+	monster_shambler_spawn();
 };
-
-void monster_shambler_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_shambler();
-	walkmonster_start_go(); // immediately run the setup code
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
-}

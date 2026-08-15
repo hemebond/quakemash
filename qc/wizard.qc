@@ -396,34 +396,10 @@ void() Wiz_Missile =
 	wiz_fast1();
 };
 
-/*QUAKED monster_wizard (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-*/
-void monster_wizard_spawn();
-void() monster_wizard =
-{
-	if (deathmatch)
-	{
-		remove(self);
-		return;
+void monster_wizard_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
 	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_wizard_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
-		return;
-	}
-
-	precache_model("progs/wizard.mdl");
-	precache_model("progs/h_wizard.mdl");
-	precache_model("progs/w_spike.mdl");
-
-	precache_sound("wizard/hit.wav"); // used by c code
-	precache_sound("wizard/wattack.wav");
-	precache_sound("wizard/wdeath.wav");
-	precache_sound("wizard/widle1.wav");
-	precache_sound("wizard/widle2.wav");
-	precache_sound("wizard/wpain.wav");
-	precache_sound("wizard/wsight.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
@@ -441,16 +417,40 @@ void() monster_wizard =
 	self.th_die = wiz_die;
 
 	flymonster_start();
-};
-
-void monster_wizard_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_wizard();
 	flymonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();
 	}
 }
+
+/*QUAKED monster_wizard (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+*/
+void() monster_wizard =
+{
+	if (deathmatch)
+	{
+		remove(self);
+		return;
+	}
+
+	precache_model("progs/wizard.mdl");
+	precache_model("progs/h_wizard.mdl");
+	precache_model("progs/w_spike.mdl");
+
+	precache_sound("wizard/hit.wav"); // used by c code
+	precache_sound("wizard/wattack.wav");
+	precache_sound("wizard/wdeath.wav");
+	precache_sound("wizard/widle1.wav");
+	precache_sound("wizard/widle2.wav");
+	precache_sound("wizard/wpain.wav");
+	precache_sound("wizard/wsight.wav");
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_wizard_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
+
+	monster_wizard_spawn();
+};

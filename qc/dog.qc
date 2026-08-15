@@ -343,35 +343,10 @@ float() DogCheckAttack =
 	return FALSE;
 };
 
-
-//===========================================================================
-
-/*QUAKED monster_dog (1 0 0) (-32 -32 -24) (32 32 40) Ambush
-
-*/
-void monster_dog_spawn();
-void() monster_dog =
-{
-	if (deathmatch)
-	{
-		remove(self);
-		return;
+void monster_dog_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
 	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_dog_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
-		return;
-	}
-
-	precache_model("progs/h_dog.mdl");
-	precache_model("progs/dog.mdl");
-
-	precache_sound("dog/dattack1.wav");
-	precache_sound("dog/ddeath.wav");
-	precache_sound("dog/dpain1.wav");
-	precache_sound("dog/dsight.wav");
-	precache_sound("dog/idle.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
@@ -390,16 +365,39 @@ void() monster_dog =
 	self.th_missile = dog_leap1;
 
 	walkmonster_start();
-};
-
-void monster_dog_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_dog();
 	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();
 	}
 }
+
+//===========================================================================
+
+/*QUAKED monster_dog (1 0 0) (-32 -32 -24) (32 32 40) Ambush
+
+*/
+void() monster_dog =
+{
+	if (deathmatch)
+	{
+		remove(self);
+		return;
+	}
+
+	precache_model("progs/h_dog.mdl");
+	precache_model("progs/dog.mdl");
+
+	precache_sound("dog/dattack1.wav");
+	precache_sound("dog/ddeath.wav");
+	precache_sound("dog/dpain1.wav");
+	precache_sound("dog/dsight.wav");
+	precache_sound("dog/idle.wav");
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_dog_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
+	monster_dog_spawn();
+};

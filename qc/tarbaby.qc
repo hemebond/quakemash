@@ -200,32 +200,10 @@ void() tbaby_die2 = [ $exp, tbaby_run1 ]
 	BecomeExplosion();
 };
 
-//=============================================================================
-
-
-/*QUAKED monster_tarbaby (1 0 0) (-16 -16 -24) (16 16 24) Ambush
-*/
-void monster_tarbaby_spawn();
-void() monster_tarbaby =
-{
-	if (deathmatch)
-	{
-		remove(self);
-		return;
+void monster_tarbaby_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
 	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_tarbaby_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
-		return;
-	}
-
-	precache_model2 ("progs/tarbaby.mdl");
-
-	precache_sound2 ("blob/death1.wav");
-	precache_sound2 ("blob/hit1.wav");
-	precache_sound2 ("blob/land1.wav");
-	precache_sound2 ("blob/sight1.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
@@ -243,16 +221,39 @@ void() monster_tarbaby =
 	self.th_die = tbaby_die1;
 
 	walkmonster_start();
-};
-
-void monster_tarbaby_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_tarbaby();
 	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();
 	}
 }
+
+//=============================================================================
+
+
+/*QUAKED monster_tarbaby (1 0 0) (-16 -16 -24) (16 16 24) Ambush
+*/
+void() monster_tarbaby =
+{
+	if (deathmatch)
+	{
+		remove(self);
+		return;
+	}
+
+	precache_model2 ("progs/tarbaby.mdl");
+
+	precache_sound2 ("blob/death1.wav");
+	precache_sound2 ("blob/hit1.wav");
+	precache_sound2 ("blob/land1.wav");
+	precache_sound2 ("blob/sight1.wav");
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_tarbaby_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
+
+	monster_tarbaby_spawn();
+};
+

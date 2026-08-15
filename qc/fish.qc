@@ -170,30 +170,10 @@ void(entity attacker, float damage) fish_pain =
 	f_pain1();
 };
 
-
-
-/*QUAKED monster_fish (1 0 0) (-16 -16 -24) (16 16 24) Ambush
-*/
-void monster_fish_spawn();
-void() monster_fish =
-{
-	if (deathmatch)
-	{
-		remove(self);
-		return;
+void monster_fish_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
 	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_fish_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
-		return;
-	}
-
-	precache_model2 ("progs/fish.mdl");
-
-	precache_sound2 ("fish/death.wav");
-	precache_sound2 ("fish/bite.wav");
-	precache_sound2 ("fish/idle.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
@@ -211,16 +191,34 @@ void() monster_fish =
 	self.th_melee = f_attack1;
 
 	swimmonster_start();
-};
-
-void monster_fish_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_fish();
 	swimmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();
 	}
 }
+
+/*QUAKED monster_fish (1 0 0) (-16 -16 -24) (16 16 24) Ambush
+*/
+void() monster_fish =
+{
+	if (deathmatch)
+	{
+		remove(self);
+		return;
+	}
+
+	precache_model2 ("progs/fish.mdl");
+
+	precache_sound2 ("fish/death.wav");
+	precache_sound2 ("fish/bite.wav");
+	precache_sound2 ("fish/idle.wav");
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_fish_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
+
+	monster_fish_spawn();
+};

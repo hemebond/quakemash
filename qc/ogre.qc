@@ -478,39 +478,12 @@ void() ogre_melee =
 };
 
 
-void monster_ogre_spawn();
-
-
-/*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
-
-*/
-void() monster_ogre =
-{
-	if (deathmatch)
-	{
-		remove(self);
-		return;
-	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_ogre_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
-		return;
+void monster_ogre_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
 	}
 
 	self.spawnflags = self.spawnflags | MON_SPAWN_NOGFX;  // set flag
-
-	precache_model("progs/ogre.mdl");
-	precache_model("progs/h_ogre.mdl");
-	precache_model("progs/grenade.mdl");
-
-	precache_sound("ogre/ogdrag.wav");
-	precache_sound("ogre/ogdth.wav");
-	precache_sound("ogre/ogidle.wav");
-	precache_sound("ogre/ogidle2.wav");
-	precache_sound("ogre/ogpain1.wav");
-	precache_sound("ogre/ogsawatk.wav");
-	precache_sound("ogre/ogwake.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
@@ -529,16 +502,6 @@ void() monster_ogre =
 	self.th_pain = ogre_pain;
 
 	walkmonster_start();
-};
-
-
-
-void monster_ogre_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-
-	monster_ogre();
 	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
@@ -547,10 +510,40 @@ void monster_ogre_spawn() {
 }
 
 
+/*QUAKED monster_ogre (1 0 0) (-32 -32 -24) (32 32 64) Ambush
+
+*/
+void() monster_ogre =
+{
+	if (deathmatch)
+	{
+		remove(self);
+		return;
+	}
+
+	precache_model("progs/ogre.mdl");
+	precache_model("progs/h_ogre.mdl");
+	precache_model("progs/grenade.mdl");
+
+	precache_sound("ogre/ogdrag.wav");
+	precache_sound("ogre/ogdth.wav");
+	precache_sound("ogre/ogidle.wav");
+	precache_sound("ogre/ogidle2.wav");
+	precache_sound("ogre/ogpain1.wav");
+	precache_sound("ogre/ogsawatk.wav");
+	precache_sound("ogre/ogwake.wav");
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_ogre_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
+
+	monster_ogre_spawn();
+};
+
 
 void() monster_ogre_marksman =
 {
 	monster_ogre();
 };
-
-

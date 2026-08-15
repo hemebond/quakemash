@@ -335,21 +335,43 @@ void() enf_die =
 };
 
 
+void monster_enforcer_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+
+	setmodel(self, "progs/enforcer.mdl");
+
+	setsize(self, '-16 -16 -24', '16 16 40');
+	self.health = 80;
+
+	self.th_stand = enf_stand1;
+	self.th_walk = enf_walk1;
+	self.th_run = enf_run1;
+	self.th_pain = enf_pain;
+	self.th_die = enf_die;
+	self.th_missile = enf_atk1;
+
+	walkmonster_start();
+	walkmonster_start_go(); // immediately run the setup code
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		self.use();
+	}
+}
+
+
 /*QUAKED monster_enforcer (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 
 */
-void monster_enforcer_spawn();
 void() monster_enforcer =
 {
 	if (deathmatch)
 	{
 		remove(self);
-		return;
-	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_enforcer_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 
@@ -368,32 +390,11 @@ void() monster_enforcer =
 	precache_sound2 ("enforcer/sight3.wav");
 	precache_sound2 ("enforcer/sight4.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_enforcer_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
 
-	setmodel(self, "progs/enforcer.mdl");
-
-	setsize(self, '-16 -16 -24', '16 16 40');
-	self.health = 80;
-
-	self.th_stand = enf_stand1;
-	self.th_walk = enf_walk1;
-	self.th_run = enf_run1;
-	self.th_pain = enf_pain;
-	self.th_die = enf_die;
-	self.th_missile = enf_atk1;
-
-	walkmonster_start();
+	monster_enforcer_spawn();
 };
-
-void monster_enforcer_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_enforcer();
-	walkmonster_start_go(); // immediately run the setup code
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
-}

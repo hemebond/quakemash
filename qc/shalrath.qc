@@ -220,35 +220,10 @@ void() ShalMissileTouch =
 	s_explode1();
 };
 
-//=================================================================
-
-/*QUAKED monster_shalrath (1 0 0) (-32 -32 -24) (32 32 48) Ambush
-*/
-void monster_shalrath_spawn();
-void() monster_shalrath =
-{
-	if (deathmatch)
-	{
-		remove(self);
-		return;
+void monster_shalrath_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
 	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_shalrath_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
-		return;
-	}
-
-	precache_model2 ("progs/shalrath.mdl");
-	precache_model2 ("progs/h_shal.mdl");
-	precache_model2 ("progs/v_spike.mdl");
-
-	precache_sound2 ("shalrath/attack.wav");
-	precache_sound2 ("shalrath/attack2.wav");
-	precache_sound2 ("shalrath/death.wav");
-	precache_sound2 ("shalrath/idle.wav");
-	precache_sound2 ("shalrath/pain.wav");
-	precache_sound2 ("shalrath/sight.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
@@ -267,18 +242,41 @@ void() monster_shalrath =
 	self.think = walkmonster_start;
 	self.nextthink = time + 0.1 + random()*0.1;
 
-};
-
-
-
-void monster_shalrath_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_shalrath();
 	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();
 	}
 }
+
+//=================================================================
+
+/*QUAKED monster_shalrath (1 0 0) (-32 -32 -24) (32 32 48) Ambush
+*/
+void() monster_shalrath =
+{
+	if (deathmatch)
+	{
+		remove(self);
+		return;
+	}
+
+	precache_model2 ("progs/shalrath.mdl");
+	precache_model2 ("progs/h_shal.mdl");
+	precache_model2 ("progs/v_spike.mdl");
+
+	precache_sound2 ("shalrath/attack.wav");
+	precache_sound2 ("shalrath/attack2.wav");
+	precache_sound2 ("shalrath/death.wav");
+	precache_sound2 ("shalrath/idle.wav");
+	precache_sound2 ("shalrath/pain.wav");
+	precache_sound2 ("shalrath/sight.wav");
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_shalrath_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
+
+	monster_shalrath_spawn();
+};

@@ -29,9 +29,9 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Download and extract ericw tools
         run: |
-          wget https://github.com/ericwa/ericw-tools/releases/download/2.0.0-alpha8/ericw-tools-2.0.0-alpha8-Linux.zip
-          unzip -d bin ericw-tools-2.0.0-alpha8-Linux.zip
+          wget https://github.com/ericwa/ericw-tools/releases/download/2.0.0-alpha11/ericw-tools-2.0.0-alpha11-Linux.zip
+          unzip -d bin ericw-tools-2.0.0-alpha11-Linux.zip
 
       - name: Compile map
         run: |
-          ./bin/qbsp -noverbose -nocolor -leaktest -bsp2 -splitspecial maps/src/quakemash.map quakemash.bsp
+          ./bin/qbsp -noverbose -nocolor -leaktest -wrbrushes -filldetail -litwater maps/src/quakemash

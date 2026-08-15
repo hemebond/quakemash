@@ -423,20 +423,42 @@ void() hknight_melee =
 	}
 };
 
+void monster_hell_knight_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
+	}
+
+	self.solid = SOLID_SLIDEBOX;
+	self.movetype = MOVETYPE_STEP;
+
+	setmodel(self, "progs/hknight.mdl");
+
+	setsize(self, '-16 -16 -24', '16 16 40');
+	self.health = 250;
+
+	self.th_stand = hknight_stand1;
+	self.th_walk = hknight_walk1;
+	self.th_run = hknight_run1;
+	self.th_melee = hknight_melee;
+	self.th_missile = hknight_magicc1;
+	self.th_pain = hknight_pain;
+	self.th_die = hknight_die;
+
+	walkmonster_start();
+	walkmonster_start_go(); // immediately run the setup code
+
+	if (self.spawnflags & MON_SPAWN_ANGRY) {
+		self.use();
+	}
+}
+
 /*QUAKED monster_hell_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 */
-void monster_hell_knight_spawn();
 void() monster_hell_knight =
 {
 	if (deathmatch)
 	{
 		remove(self);
-		return;
-	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_hell_knight_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 
@@ -457,33 +479,11 @@ void() monster_hell_knight =
 	precache_sound("knight/sword1.wav");
 	precache_sound("knight/sword2.wav");
 
-	self.solid = SOLID_SLIDEBOX;
-	self.movetype = MOVETYPE_STEP;
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_hell_knight_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
 
-	setmodel(self, "progs/hknight.mdl");
-
-	setsize(self, '-16 -16 -24', '16 16 40');
-	self.health = 250;
-
-	self.th_stand = hknight_stand1;
-	self.th_walk = hknight_walk1;
-	self.th_run = hknight_run1;
-	self.th_melee = hknight_melee;
-	self.th_missile = hknight_magicc1;
-	self.th_pain = hknight_pain;
-	self.th_die = hknight_die;
-
-	walkmonster_start();
+	monster_hell_knight_spawn();
 };
-
-void monster_hell_knight_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_hell_knight();
-	walkmonster_start_go(); // immediately run the setup code
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
-}

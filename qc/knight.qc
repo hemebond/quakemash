@@ -251,33 +251,10 @@ void() knight_die =
 		knight_dieb1();
 };
 
-
-/*QUAKED monster_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
-*/
-void monster_knight_spawn();
-void() monster_knight =
-{
-	if (deathmatch)
-	{
-		remove(self);
-		return;
+void monster_knight_spawn() {
+	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
+		spawn_tfog(self.origin);
 	}
-
-	if (self.spawnflags & MON_SPAWN_DELAY) {
-		self.use = monster_knight_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
-		return;
-	}
-
-	precache_model("progs/knight.mdl");
-	precache_model("progs/h_knight.mdl");
-
-	precache_sound("knight/kdeath.wav");
-	precache_sound("knight/khurt.wav");
-	precache_sound("knight/ksight.wav");
-	precache_sound("knight/sword1.wav");
-	precache_sound("knight/sword2.wav");
-	precache_sound("knight/idle.wav");
 
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;
@@ -295,16 +272,38 @@ void() monster_knight =
 	self.th_die = knight_die;
 
 	walkmonster_start();
-};
-
-void monster_knight_spawn() {
-	if (!(self.spawnflags & MON_SPAWN_NOGFX)) {
-		spawn_tfog(self.origin);
-	}
-	monster_knight();
 	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();
 	}
 }
+
+/*QUAKED monster_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
+*/
+void() monster_knight =
+{
+	if (deathmatch)
+	{
+		remove(self);
+		return;
+	}
+
+	precache_model("progs/knight.mdl");
+	precache_model("progs/h_knight.mdl");
+
+	precache_sound("knight/kdeath.wav");
+	precache_sound("knight/khurt.wav");
+	precache_sound("knight/ksight.wav");
+	precache_sound("knight/sword1.wav");
+	precache_sound("knight/sword2.wav");
+	precache_sound("knight/idle.wav");
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		self.use = monster_knight_spawn;
+		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
+		return;
+	}
+
+	monster_knight_spawn();
+};
