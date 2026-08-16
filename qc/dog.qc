@@ -365,7 +365,6 @@ void monster_dog_spawn() {
 	self.th_missile = dog_leap1;
 
 	walkmonster_start();
-	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();

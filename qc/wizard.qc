@@ -417,7 +417,6 @@ void monster_wizard_spawn() {
 	self.th_die = wiz_die;
 
 	flymonster_start();
-	flymonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();

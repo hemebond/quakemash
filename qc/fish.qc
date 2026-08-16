@@ -191,7 +191,6 @@ void monster_fish_spawn() {
 	self.th_melee = f_attack1;
 
 	swimmonster_start();
-	swimmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();

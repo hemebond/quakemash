@@ -215,7 +215,6 @@ void monster_demon1_spawn() {
 	self.th_pain = demon1_pain;
 
 	walkmonster_start();
-	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();

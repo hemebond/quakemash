@@ -519,8 +519,6 @@ void monster_zombie_spawn() {
 	else
 		walkmonster_start();
 
-	walkmonster_start_go(); // immediately run the setup code
-
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();
 	}
@@ -561,5 +559,6 @@ void() monster_zombie =
 		return;
 	}
 
+	self.spawnflags |= MON_SPAWN_NOGFX;  // No need for spawn effects for monsters that should already be in the level
 	monster_zombie_spawn();
 };

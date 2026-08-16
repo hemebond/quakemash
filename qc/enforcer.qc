@@ -356,7 +356,6 @@ void monster_enforcer_spawn() {
 	self.th_missile = enf_atk1;
 
 	walkmonster_start();
-	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();

@@ -944,19 +944,23 @@ following:
 
 void() item_key1 =
 {
-	if (world.worldtype == 0)
+	if (!self.worldtype) {
+		self.worldtype = world.worldtype;
+	}
+
+	if (self.worldtype == 0)
 	{
 		precache_model("progs/w_s_key.mdl");
 		setmodel(self, "progs/w_s_key.mdl");
 		self.netname = "silver key";
 	}
-	else if (world.worldtype == 1)
+	else if (self.worldtype == 1)
 	{
 		precache_model("progs/m_s_key.mdl");
 		setmodel(self, "progs/m_s_key.mdl");
 		self.netname = "silver runekey";
 	}
-	else if (world.worldtype == 2)
+	else if (self.worldtype == 2)
 	{
 		precache_model2 ("progs/b_s_key.mdl");
 		setmodel(self, "progs/b_s_key.mdl");
@@ -982,19 +986,23 @@ following:
 
 void() item_key2 =
 {
-	if (world.worldtype == 0)
+	if (!self.worldtype) {
+		self.worldtype = world.worldtype;
+	}
+
+	if (self.worldtype == 0)
 	{
 		precache_model("progs/w_g_key.mdl");
 		setmodel(self, "progs/w_g_key.mdl");
 		self.netname = "gold key";
 	}
-	if (world.worldtype == 1)
+	if (self.worldtype == 1)
 	{
 		precache_model("progs/m_g_key.mdl");
 		setmodel(self, "progs/m_g_key.mdl");
 		self.netname = "gold runekey";
 	}
-	if (world.worldtype == 2)
+	if (self.worldtype == 2)
 	{
 		precache_model2 ("progs/b_g_key.mdl");
 		setmodel(self, "progs/b_g_key.mdl");

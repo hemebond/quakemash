@@ -445,7 +445,6 @@ void monster_hell_knight_spawn() {
 	self.th_die = hknight_die;
 
 	walkmonster_start();
-	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();

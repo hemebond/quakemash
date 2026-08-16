@@ -221,7 +221,6 @@ void monster_tarbaby_spawn() {
 	self.th_die = tbaby_die1;
 
 	walkmonster_start();
-	walkmonster_start_go(); // immediately run the setup code
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();

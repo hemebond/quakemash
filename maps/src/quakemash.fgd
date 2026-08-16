@@ -13,6 +13,8 @@
 // worldspawn
 //
 
+@include "ad_1_8.fgd"
+
 @SolidClass = worldspawn : "World entity"
 [
 	message(string) : "Text on entering the world"
@@ -588,3 +590,7 @@
 ]
 @PointClass size(16 16 16) = misc_noisemaker : "Debug entity: continuously plays enforcer sounds" []
 @PointClass size(16 16 16) = viewthing : "Debug entity: fake player model" []
+
+@PointClass base(Target, Targetname) size(16 16 16) = trigger_settarget : "Trigger: Set Target" [
+	message(target_destination) : "New value"
+]

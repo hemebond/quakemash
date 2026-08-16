@@ -479,7 +479,7 @@ void trigger_teleport() {
 	InitTrigger();
 	self.touch = teleport_touch;
 	// find the destination
-	if (!self.target)
+	if (self.target == "")
 		objerror("no target");
 	self.use = teleport_use;
 

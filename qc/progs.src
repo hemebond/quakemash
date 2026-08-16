@@ -15,6 +15,7 @@ doors.qc
 buttons.qc
 triggers.qc
 trigger_gravity.qc
+trigger_settarget.qc
 plats.qc
 misc.qc
 

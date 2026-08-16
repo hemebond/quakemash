@@ -242,7 +242,7 @@ void monster_shalrath_spawn() {
 	self.think = walkmonster_start;
 	self.nextthink = time + 0.1 + random()*0.1;
 
-	walkmonster_start_go(); // immediately run the setup code
+	walkmonster_start();
 
 	if (self.spawnflags & MON_SPAWN_ANGRY) {
 		self.use();
