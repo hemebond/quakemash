@@ -356,10 +356,6 @@ void monster_enforcer_spawn() {
 	self.th_missile = enf_atk1;
 
 	walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 
@@ -391,7 +387,6 @@ void() monster_enforcer =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_enforcer_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 

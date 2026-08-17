@@ -365,10 +365,6 @@ void monster_dog_spawn() {
 	self.th_missile = dog_leap1;
 
 	walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 //===========================================================================
@@ -395,7 +391,6 @@ void() monster_dog =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_dog_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 	monster_dog_spawn();

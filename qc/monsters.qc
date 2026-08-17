@@ -128,18 +128,28 @@ void() walkmonster_start_go =
 	}
 
 // spread think times so they don't all happen at same time
-	self.nextthink = self.nextthink + random()*0.5;
+	self.nextthink = self.nextthink + random() * 0.5;
 };
 
 
-void() walkmonster_start =
-{
-// delay drop to floor to make sure all doors have been spawned
-// spread think times so they don't all happen at same time
-	self.nextthink = self.nextthink + random()*0.5;
-	self.think = walkmonster_start_go;
+void walkmonster_start() {
 	total_monsters = total_monsters + 1;
-};
+
+	if (self.spawnflags & MON_SPAWN_DELAY) {
+		// Spawn was delayed so we want to activate the monster immediately
+		walkmonster_start_go();
+
+		if (self.spawnflags & MON_SPAWN_ANGRY) {
+			self.use();
+		}
+	}
+	else {
+		// delay drop to floor to make sure all doors have been spawned
+		// spread think times so they don't all happen at same time
+		self.nextthink = self.nextthink + random() * 0.5;
+		self.think = walkmonster_start_go;
+	}
+}
 
 
 

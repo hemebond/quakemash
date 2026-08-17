@@ -215,10 +215,6 @@ void monster_demon1_spawn() {
 	self.th_pain = demon1_pain;
 
 	walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 /*QUAKED monster_demon1 (1 0 0) (-32 -32 -24) (32 32 64) Ambush
@@ -244,7 +240,6 @@ void() monster_demon1 =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_demon1_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 

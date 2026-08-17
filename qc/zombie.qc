@@ -516,11 +516,8 @@ void monster_zombie_spawn() {
 		self.movetype = MOVETYPE_NONE;
 		zombie_cruc1();
 	}
-	else
+	else {
 		walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
 	}
 }
 
@@ -555,7 +552,6 @@ void() monster_zombie =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_zombie_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 

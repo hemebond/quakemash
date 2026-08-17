@@ -417,10 +417,6 @@ void monster_wizard_spawn() {
 	self.th_die = wiz_die;
 
 	flymonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 /*QUAKED monster_wizard (1 0 0) (-16 -16 -24) (16 16 40) Ambush
@@ -447,7 +443,6 @@ void() monster_wizard =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_wizard_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 

@@ -378,10 +378,6 @@ void monster_shambler_spawn() {
 	self.th_pain = sham_pain;
 
 	walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 //============================================================================
@@ -414,7 +410,6 @@ void() monster_shambler =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_shambler_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 

@@ -502,10 +502,6 @@ void monster_ogre_spawn() {
 	self.th_pain = ogre_pain;
 
 	walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 
@@ -534,7 +530,6 @@ void() monster_ogre =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_ogre_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 

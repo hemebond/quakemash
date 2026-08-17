@@ -243,10 +243,6 @@ void monster_shalrath_spawn() {
 	self.nextthink = time + 0.1 + random()*0.1;
 
 	walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 //=================================================================
@@ -274,7 +270,6 @@ void() monster_shalrath =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_shalrath_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 

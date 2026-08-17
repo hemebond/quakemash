@@ -295,10 +295,6 @@ void monster_army_spawn() {
 	self.th_die = army_die;
 
 	walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 
@@ -329,7 +325,6 @@ void() monster_army =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_army_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 	monster_army_spawn();

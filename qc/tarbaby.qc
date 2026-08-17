@@ -221,10 +221,6 @@ void monster_tarbaby_spawn() {
 	self.th_die = tbaby_die1;
 
 	walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 //=============================================================================
@@ -249,7 +245,6 @@ void() monster_tarbaby =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_tarbaby_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 

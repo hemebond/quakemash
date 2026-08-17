@@ -445,10 +445,6 @@ void monster_hell_knight_spawn() {
 	self.th_die = hknight_die;
 
 	walkmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 /*QUAKED monster_hell_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
@@ -480,7 +476,6 @@ void() monster_hell_knight =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_hell_knight_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 

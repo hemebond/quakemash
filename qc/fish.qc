@@ -191,10 +191,6 @@ void monster_fish_spawn() {
 	self.th_melee = f_attack1;
 
 	swimmonster_start();
-
-	if (self.spawnflags & MON_SPAWN_ANGRY) {
-		self.use();
-	}
 }
 
 /*QUAKED monster_fish (1 0 0) (-16 -16 -24) (16 16 24) Ambush
@@ -215,7 +211,6 @@ void() monster_fish =
 
 	if (self.spawnflags & MON_SPAWN_DELAY) {
 		self.use = monster_fish_spawn;
-		self.spawnflags = self.spawnflags - MON_SPAWN_DELAY;
 		return;
 	}
 
